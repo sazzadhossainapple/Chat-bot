@@ -14,5 +14,20 @@
 }
 
 body {
-    background-color: var(--primary-color);
+    margin: 0;
+    padding: 0;
+    background-color: #1f1f38 !important;
+}
+.Link {
+    text-decoration: none;
+}
+ul {
+    margin-left: 0rem !important;
+    padding-left: 0rem !important;
+}
+.form-control:focus {
+    box-shadow: none !important;
+}
+.form-select {
+    box-shadow: none !important;
 }
