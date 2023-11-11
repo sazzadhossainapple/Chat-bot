@@ -8,11 +8,13 @@ function TextModal({ show, handleClose, setGeneratedText }) {
     const { user } = useContext(AuthContext);
 
     const [inputText, setInputText] = useState('');
+    const [loading, setLoading] = useState(false);
     const key = localStorage.getItem(`ChatGPTKey_${user.email}`);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        handleClose();
+        setLoading(true);
+
         try {
             const res = await axios.post(
                 'https://api.openai.com/v1/engines/text-davinci-003/completions',
@@ -34,13 +36,15 @@ function TextModal({ show, handleClose, setGeneratedText }) {
 
             const text = res.data.choices[0];
             console.log(text);
-            setGeneratedText(text);
+            setGeneratedText(res.data.choices[0]);
             toast.success('success');
         } catch (error) {
             console.error('Error generating text:', error);
             toast.error('Failed');
         } finally {
+            setLoading(false);
             setInputText('');
+            handleClose();
         }
     };
 
@@ -75,7 +79,7 @@ function TextModal({ show, handleClose, setGeneratedText }) {
                     </div>
 
                     <button type="submit" className="btn btn-primary d-flex">
-                        Generate Text
+                        {loading ? 'Generating...' : 'Generate Text'}
                     </button>
                 </form>
             </Modal.Body>

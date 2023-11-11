@@ -30,7 +30,9 @@ function Dashboard() {
         }
     };
 
-    console.log(generatedText);
+    useEffect(() => {
+        console.log('Generated Text:', generatedText);
+    }, [generatedText]);
 
     return (
         <>
@@ -55,7 +57,7 @@ function Dashboard() {
                         rows="12"
                         class="form-control"
                         readOnly
-                        defaultValue={generatedText}
+                        value={generatedText?.text}
                     ></textarea>
                 </div>
             </div>
