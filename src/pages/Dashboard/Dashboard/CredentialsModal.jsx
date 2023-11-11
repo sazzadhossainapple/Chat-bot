@@ -55,6 +55,7 @@ function CredentialsModal({ show, handleClose }) {
                             value={chatGPTKey.key}
                             className="form-control py-2"
                             placeholder="Enter your secret key"
+                            required
                             onChange={handleChange}
                         />
                         <p style={{ fontSize: '12px' }}>
