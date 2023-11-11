@@ -51,7 +51,12 @@ function Dashboard() {
                 </div>
 
                 <div>
-                    <textarea rows="12" class="form-control"></textarea>
+                    <textarea
+                        rows="12"
+                        class="form-control"
+                        readOnly
+                        defaultValue={generatedText}
+                    ></textarea>
                 </div>
             </div>
 

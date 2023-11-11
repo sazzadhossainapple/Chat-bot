@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Modal } from 'react-bootstrap';
-import { sendMsgToOpenAI } from './openai';
 import { AuthContext } from '../../../context/UserContext/UserContext';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 function TextModal({ show, handleClose, setGeneratedText }) {
     const { user } = useContext(AuthContext);
@@ -9,10 +10,38 @@ function TextModal({ show, handleClose, setGeneratedText }) {
     const [inputText, setInputText] = useState('');
     const key = localStorage.getItem(`ChatGPTKey_${user.email}`);
 
-    const handleSend = async () => {
-        const res = await sendMsgToOpenAI(inputText, key);
-        console.log(res);
-        setGeneratedText(res);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        handleClose();
+        try {
+            const res = await axios.post(
+                'https://api.openai.com/v1/engines/text-davinci-003/completions',
+                {
+                    prompt: inputText,
+                    max_tokens: 256,
+                    temperature: 0.7,
+                    top_p: 1,
+                    frequency_penalty: 0,
+                    presence_penalty: 0,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${key}`,
+                    },
+                }
+            );
+
+            const text = res.data.choices[0];
+            console.log(text);
+            setGeneratedText(text);
+            toast.success('success');
+        } catch (error) {
+            console.error('Error generating text:', error);
+            toast.error('Failed');
+        } finally {
+            setInputText('');
+        }
     };
 
     return (
@@ -33,26 +62,22 @@ function TextModal({ show, handleClose, setGeneratedText }) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body className="px-4 form-body">
-                {/* <form onSubmit="handleSubmit"> */}
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="title"
-                        className="form-control py-2"
-                        placeholder="Write your text"
-                        value={inputText}
-                        onChange={(e) => setInputText(e.target.value)}
-                    />
-                </div>
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            name="title"
+                            className="form-control py-2"
+                            placeholder="Write your text"
+                            value={inputText}
+                            onChange={(e) => setInputText(e.target.value)}
+                        />
+                    </div>
 
-                <button
-                    type="button"
-                    onClick={handleSend}
-                    className="btn btn-primary d-flex"
-                >
-                    Generate Text
-                </button>
-                {/* </form> */}
+                    <button type="submit" className="btn btn-primary d-flex">
+                        Generate Text
+                    </button>
+                </form>
             </Modal.Body>
         </Modal>
     );
