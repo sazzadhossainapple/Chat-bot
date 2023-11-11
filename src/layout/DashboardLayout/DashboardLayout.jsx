@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { AiOutlineFolderView, AiOutlineLogout } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
@@ -10,16 +10,26 @@ import SubMenu from './SubMenu';
 import Image from '../../assets/Image/defualtImages.png';
 import Logo from '../../assets/Image/logo.png';
 import './dashboardLayout.css';
+import { AuthContext } from '../../context/UserContext/UserContext';
 
 function DashboardLayout() {
+    const { user, logOutUser } = useContext(AuthContext);
     const [sidebar, setSidebar] = useState(false);
     const navigate = useNavigate();
 
     const showSidebar = () => setSidebar(!sidebar);
 
+    // const logOut = () => {
+    //     localStorage.removeItem('accessToken');
+    //     navigate('/login');
+    // };
+
     const logOut = () => {
-        localStorage.removeItem('accessToken');
-        navigate('/login');
+        logOutUser()
+            .then(() => {
+                navigate('/');
+            })
+            .catch((err) => console.error(err));
     };
 
     const [show, setShow] = useState(false);
@@ -87,7 +97,7 @@ function DashboardLayout() {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                     <Dropdown.Item
-                                        // onClick={logOut}
+                                        onClick={logOut}
                                         className="text-danger"
                                     >
                                         <AiOutlineLogout />

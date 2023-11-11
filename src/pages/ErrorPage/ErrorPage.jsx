@@ -5,11 +5,11 @@ import './errorPage.css';
 function ErrorPage() {
     return (
         <div className="">
-            <h1 className="mb-1">404 Error</h1>
-            <p className="text-center">
+            <h1 className="mb-1 text-white">404 Error</h1>
+            <p className="text-center text-white">
                 <b>Opps! Page not found.</b>
             </p>
-            <p className="zoom-area">
+            <p className="zoom-area  text-white">
                 The page you’re looking for doesn’t exist.
             </p>
 
@@ -25,7 +25,7 @@ function ErrorPage() {
                 </span>
             </section>
             <div className="link-container">
-                <Link to="/" class="more-link">
+                <Link to="/" className="more-link">
                     Back Home
                 </Link>
             </div>
