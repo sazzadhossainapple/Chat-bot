@@ -73,6 +73,7 @@ function TextModal({ show, handleClose, setGeneratedText }) {
                             name="title"
                             className="form-control py-2"
                             placeholder="Write your text"
+                            required
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
                         />
