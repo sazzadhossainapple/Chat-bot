@@ -43,7 +43,7 @@ function SingUp() {
             })
             .catch((err) => {
                 console.log(err);
-                toast.error(err.meassage);
+                toast.error(err.message);
             });
     };
 
